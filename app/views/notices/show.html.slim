@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Creator:
+  = @notice.creator
+p
+  strong Title:
+  = @notice.title
+p
+  strong Category:
+  = @notice.category
+p
+  strong Text:
+  = @notice.text
+
+= link_to 'Edit', edit_notice_path(@notice)
+'|
+= link_to 'Back', notices_path

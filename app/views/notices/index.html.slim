@@ -1,0 +1,27 @@
+h1 Listing notices
+
+table
+  thead
+    tr
+      th Creator
+      th Title
+      th Category
+      th Text
+      th
+      th
+      th
+
+  tbody
+    - @notices.each do |notice|
+      tr
+        td = notice.creator
+        td = notice.title
+        td = notice.category
+        td = notice.text
+        td = link_to 'Show', notice
+        td = link_to 'Edit', edit_notice_path(notice)
+        td = link_to 'Destroy', notice, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Notice', new_notice_path

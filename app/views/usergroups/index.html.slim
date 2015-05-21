@@ -1,0 +1,23 @@
+h1 Listing usergroups
+
+table
+  thead
+    tr
+      th Admin
+      th Name
+      th
+      th
+      th
+
+  tbody
+    - @usergroups.each do |usergroup|
+      tr
+        td = usergroup.admin
+        td = usergroup.name
+        td = link_to 'Show', usergroup
+        td = link_to 'Edit', edit_usergroup_path(usergroup)
+        td = link_to 'Destroy', usergroup, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Usergroup', new_usergroup_path

@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Admin:
+  = @usergroup.admin
+p
+  strong Name:
+  = @usergroup.name
+
+= link_to 'Edit', edit_usergroup_path(@usergroup)
+'|
+= link_to 'Back', usergroups_path
