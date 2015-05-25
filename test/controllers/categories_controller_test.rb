@@ -5,41 +5,41 @@ class CategoriesControllerTest < ActionController::TestCase
     @category = categories(:one)
   end
 
-  test "should get index" do
+  test "category should get index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:categories)
   end
 
-  test "should get new" do
+  test "category should get new" do
     get :new
     assert_response :success
   end
 
-  test "should create category" do
+  test "category should create" do
     assert_difference('Category.count') do
-      post :create, category: { name: @category.name }
+      post :create, category: { name: "#{@category.name}_v2" }
     end
 
     assert_redirected_to category_path(assigns(:category))
   end
 
-  test "should show category" do
+  test "category should show" do
     get :show, id: @category
     assert_response :success
   end
 
-  test "should get edit" do
+  test "category should get edit" do
     get :edit, id: @category
     assert_response :success
   end
 
-  test "should update category" do
+  test "category should update" do
     patch :update, id: @category, category: { name: @category.name }
     assert_redirected_to category_path(assigns(:category))
   end
 
-  test "should destroy category" do
+  test "category should destroy" do
     assert_difference('Category.count', -1) do
       delete :destroy, id: @category
     end

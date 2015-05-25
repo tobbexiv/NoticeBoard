@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "user the name must be uniqe" do
+    assert_raise ActiveRecord::RecordInvalid do
+      User.create! email: users(:one).email
+    end
+  end
 end
