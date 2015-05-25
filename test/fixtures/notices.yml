@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  creator_id: 
-  title: MyString
-  category_id: 
-  text: MyText
+  creator_id: 1
+  title: Notice1
+  category_id: 1
+  text: <%= Faker::Lorem.paragraph %>
 
 two:
-  creator_id: 
-  title: MyString
-  category_id: 
-  text: MyText
+  creator_id: 2
+  title: Notice 2
+  category_id: 2
+  text: <%= Faker::Lorem.paragraph(10) %>
