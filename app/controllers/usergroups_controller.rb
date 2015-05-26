@@ -11,6 +11,14 @@ class UsergroupsController < ApplicationController
   # GET /usergroups/1
   # GET /usergroups/1.json
   def show
+    if @usergroup.admin == current_user
+
+    else
+      respond_to do |format|
+        format.html { redirect_to usergroups_url, alert: 'You have no right to view this usergroup.' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   # GET /usergroups/new
@@ -20,6 +28,14 @@ class UsergroupsController < ApplicationController
 
   # GET /usergroups/1/edit
   def edit
+    if @usergroup.admin == current_user
+
+    else
+      respond_to do |format|
+        format.html { redirect_to usergroups_url, alert: 'You have no right to edit this usergroup.' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   # POST /usergroups
@@ -42,13 +58,20 @@ class UsergroupsController < ApplicationController
   # PATCH/PUT /usergroups/1
   # PATCH/PUT /usergroups/1.json
   def update
-    respond_to do |format|
-      if @usergroup.update(usergroup_params)
-        format.html { redirect_to @usergroup, notice: 'Usergroup was successfully updated.' }
-        format.json { render :show, status: :ok, location: @usergroup }
-      else
-        format.html { render :edit }
-        format.json { render json: @usergroup.errors, status: :unprocessable_entity }
+    if @usergroup.admin == current_user
+      respond_to do |format|
+        if @usergroup.update(usergroup_params)
+          format.html { redirect_to @usergroup, notice: 'Usergroup was successfully updated.' }
+          format.json { render :show, status: :ok, location: @usergroup }
+        else
+          format.html { render :edit }
+          format.json { render json: @usergroup.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to usergroups_url, alert: 'You have no right to update this usergroup.' }
+        format.json { head :no_content }
       end
     end
   end
@@ -56,10 +79,17 @@ class UsergroupsController < ApplicationController
   # DELETE /usergroups/1
   # DELETE /usergroups/1.json
   def destroy
-    @usergroup.destroy
-    respond_to do |format|
-      format.html { redirect_to usergroups_url, notice: 'Usergroup was successfully destroyed.' }
-      format.json { head :no_content }
+    if @usergroup.admin == current_user
+      @usergroup.destroy
+      respond_to do |format|
+        format.html { redirect_to usergroups_url, notice: 'Usergroup was successfully deleted.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to usergroups_url, alert: 'You have no right to delete this usergroup.' }
+        format.json { head :no_content }
+      end
     end
   end
 
