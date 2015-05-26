@@ -10,7 +10,7 @@ table.table.table-striped
       th Action
 
   tbody
-    - @usergroups.each do |usergroup|
+    - @usergroups.own(current_user).each do |usergroup|
       tr
         td = usergroup.name
         td

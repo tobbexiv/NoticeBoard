@@ -5,4 +5,8 @@ class Usergroup < ActiveRecord::Base
 
   validates_presence_of :admin
   validates_presence_of :name
+
+  scope :own, lambda { |user|
+              where("admin_id = ?", user.id)
+            }
 end

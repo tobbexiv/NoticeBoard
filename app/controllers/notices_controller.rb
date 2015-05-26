@@ -1,5 +1,5 @@
 class NoticesController < ApplicationController
-  before_action :set_notice, only: [:show, :edit, :update, :destroy]
+  before_action :set_notice, only: [:show, :edit, :update, :destroy, :grant_access]
 
   # GET /notices
   # GET /notices.json
@@ -101,6 +101,29 @@ class NoticesController < ApplicationController
     end
   end
 
+  def grant_access
+    if @notice.creator == current_user
+      usergroup = Usergroup.where(id: usergroup_params[:grant_access])
+      unless usergroup.nil?
+        begin
+          @notice.usergroups.find(usergroup)
+        rescue ActiveRecord::RecordNotFound
+          @notice.usergroups << usergroup
+        end
+      end
+
+      respond_to do |format|
+        format.html { redirect_to @notice, notice: 'Access granted.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @notice, alert: 'You have no right to grant access.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_notice
@@ -110,5 +133,9 @@ class NoticesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def notice_params
       params.require(:notice).permit(:title, :category_id, :text)
+    end
+
+    def usergroup_params
+      params.permit(:grant_access)
     end
 end
