@@ -121,8 +121,6 @@ class NoticesController < ApplicationController
           format.json { head :no_content }
         end
       end
-
-
     else
       respond_to do |format|
         format.html { redirect_to @notice, alert: 'You have no right to grant access.' }

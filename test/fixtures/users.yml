@@ -6,12 +6,16 @@
 #
 one:
   email: <%= Faker::Internet.safe_email %>
+  encrypted_password: <%= Devise.bcrypt(User, 'password') %>
 
 two:
   email: <%= Faker::Internet.safe_email %>
+  encrypted_password: <%= Devise.bcrypt(User, 'password') %>
 
 three:
   email: <%= Faker::Internet.safe_email %>
+  encrypted_password: <%= Devise.bcrypt(User, 'password') %>
 
 four:
   email: <%= Faker::Internet.safe_email %>
+  encrypted_password: <%= Devise.bcrypt(User, 'password') %>

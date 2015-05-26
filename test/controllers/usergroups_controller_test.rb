@@ -5,7 +5,9 @@ include Devise::TestHelpers
 class UsergroupsControllerTest < ActionController::TestCase
   setup do
     sign_in users(:one)
+    @user2 = users(:two)
     @usergroup = usergroups(:one)
+    @usergroup2 = usergroups(:two)
   end
 
   test "usergroup should get index" do
@@ -46,6 +48,30 @@ class UsergroupsControllerTest < ActionController::TestCase
     assert_difference('Usergroup.count', -1) do
       delete :destroy, id: @usergroup
     end
+
+    assert_redirected_to usergroups_path
+  end
+
+  test "usergroup can not destroy foreign" do
+    assert_no_difference("Usergroup.count") do
+      delete :destroy, id: @usergroup2
+    end
+
+    assert_redirected_to usergroups_path
+  end
+
+  test "usergroup can not update foreign" do
+    get :edit, id: @usergroup2
+
+    assert_redirected_to usergroups_path
+
+    patch :update, id: @usergroup2, usergroup: { name: @usergroup2.name }
+
+    assert_redirected_to usergroups_path
+  end
+
+  test "usergroup can not view foreign" do
+    get :show, id: @usergroup2
 
     assert_redirected_to usergroups_path
   end

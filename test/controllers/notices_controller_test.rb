@@ -51,7 +51,7 @@ class NoticesControllerTest < ActionController::TestCase
     assert_redirected_to notices_path
   end
 
-  test "notice can not destroy foreign notice" do
+  test "notice can not destroy foreign" do
     assert_no_difference("Notice.count") do
       delete :destroy, id: @notice2
     end
@@ -59,13 +59,17 @@ class NoticesControllerTest < ActionController::TestCase
     assert_redirected_to notices_path
   end
 
-  test "notice can not update foreign notice" do
+  test "notice can not update foreign" do
+    get :edit, id: @notice2
+
+    assert_redirected_to notices_path
+
     patch :update, id: @notice2, notice: { category_id: @notice2.category_id, creator_id: @notice2.creator_id, text: @notice2.text, title: @notice2.title }
 
     assert_redirected_to notices_path
   end
 
-  test "notice can not view foreign notice" do
+  test "notice can not view foreign" do
     get :show, id: notices(:three)
 
     assert_redirected_to notices_path

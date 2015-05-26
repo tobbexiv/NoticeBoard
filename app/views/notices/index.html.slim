@@ -3,7 +3,7 @@ h1
   = link_to new_notice_path do
     span.glyphicon.glyphicon-plus
 
-table.table.table-striped
+table#own_notices.table.table-striped
   thead
     tr
       th Title
@@ -26,7 +26,7 @@ table.table.table-striped
           = link_to notice, data: {:confirm => "Are you sure to delete notice '#{notice.title}'?"}, :method => :delete do
             span.glyphicon.glyphicon-remove
 
-table.table.table-striped
+table#granted_notices.table.table-striped
   thead
     tr
       th Title
