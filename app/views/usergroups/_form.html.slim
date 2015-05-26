@@ -1,15 +1,21 @@
-= form_for @usergroup do |f|
-  - if @usergroup.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@usergroup.errors.count, "error")} prohibited this usergroup from being saved:"
-      ul
-        - @usergroup.errors.full_messages.each do |message|
-          li = message
+- readonly ||= false
 
-  .field
-    = f.label :admin
-    = f.text_field :admin
-  .field
-    = f.label :name
-    = f.text_field :name
-  .actions = f.submit
+= form_for @usergroup, html:  { class: "form-horizontal" } do |f|
+  - if @usergroup.errors.any?
+    div.alert.alert-danger.alert-dismissible
+      button.close type="button" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+      - @usergroup.errors.full_messages.each do |message|
+        = message
+        br
+
+  div.form-group
+    = f.label :name, class: "col-sm-1 control-label"
+    div.col-sm-4
+      = f.text_field :name, class: "form-control", readonly: readonly
+  div.form-group
+    div.col-sm-offset-1.col-sm-4
+      - if readonly == false
+        = f.submit class: "btn btn-default"
+      - links.each do |link|
+        = link_to link[:title], link[:path], class: "btn btn-link"

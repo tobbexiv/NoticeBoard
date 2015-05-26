@@ -1,27 +1,45 @@
-h1 Listing notices
+h1
+  'Notices
+  = link_to new_notice_path do
+    span.glyphicon.glyphicon-plus
 
-table
+table.table.table-striped
   thead
     tr
-      th Creator
       th Title
       th Category
-      th Text
-      th
-      th
+      th Action
+
+
+  tbody
+    - @notices.own(current_user).each do |notice|
+      tr
+        td = notice.title
+        td = notice.category
+        td
+          = link_to notice do
+            span.glyphicon.glyphicon-search
+          '&nbsp;
+          = link_to edit_notice_path(notice)
+            span.glyphicon.glyphicon-pencil
+          '&nbsp;
+          = link_to notice, data: {:confirm => "Are you sure to delete notice '#{notice.title}'?"}, :method => :delete do
+            span.glyphicon.glyphicon-remove
+
+table.table.table-striped
+  thead
+    tr
+      th Title
+      th Category
+      th Author
       th
 
   tbody
-    - @notices.each do |notice|
+    - @notices.accessgranted(current_user).each do |notice|
       tr
-        td = notice.creator
         td = notice.title
         td = notice.category
-        td = notice.text
-        td = link_to 'Show', notice
-        td = link_to 'Edit', edit_notice_path(notice)
-        td = link_to 'Destroy', notice, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
-= link_to 'New Notice', new_notice_path
+        td = notice.author.email
+        td
+          = link_to notice do
+            span.glyphicon.glyphicon-search

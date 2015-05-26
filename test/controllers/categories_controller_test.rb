@@ -1,7 +1,10 @@
 require 'test_helper'
 
+include Devise::TestHelpers
+
 class CategoriesControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:one)
     @category = categories(:one)
   end
 

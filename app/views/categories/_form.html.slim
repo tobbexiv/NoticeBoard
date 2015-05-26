@@ -1,12 +1,20 @@
-= form_for @category do |f|
-  - if @category.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@category.errors.count, "error")} prohibited this category from being saved:"
-      ul
-        - @category.errors.full_messages.each do |message|
-          li = message
+- readonly ||= false
 
-  .field
-    = f.label :name
-    = f.text_field :name
-  .actions = f.submit
+= form_for @category, html:  { class: "form-horizontal" } do |f|
+  - if @category.errors.any?
+    div.alert.alert-danger.alert-dismissible
+      button.close type="button" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+      - @category.errors.full_messages.each do |message|
+        = message
+
+  div.form-group
+    = f.label :name, class: "col-sm-1 control-label"
+    div.col-sm-4
+      = f.text_field :name, class: "form-control", readonly: readonly
+  div.form-group
+    div.col-sm-offset-1.col-sm-4
+      - if readonly == false
+        = f.submit class: "btn btn-default"
+      - links.each do |link|
+        = link_to link[:title], link[:path], class: "btn btn-link"

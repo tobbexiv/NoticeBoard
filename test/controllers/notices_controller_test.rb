@@ -1,7 +1,10 @@
 require 'test_helper'
 
+include Devise::TestHelpers
+
 class NoticesControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:one)
     @notice = notices(:one)
   end
 

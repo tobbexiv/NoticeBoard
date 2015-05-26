@@ -1,21 +1,24 @@
-h1 Listing categories
+h1
+  'Categories
+  = link_to new_category_path do
+    span.glyphicon.glyphicon-plus
 
-table
+table.table.table-striped
   thead
     tr
       th Name
-      th
-      th
-      th
+      th Action
 
   tbody
     - @categories.each do |category|
       tr
         td = category.name
-        td = link_to 'Show', category
-        td = link_to 'Edit', edit_category_path(category)
-        td = link_to 'Destroy', category, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
-= link_to 'New Category', new_category_path
+        td
+          = link_to category do
+            span.glyphicon.glyphicon-search
+          '&nbsp;
+          = link_to edit_category_path(category)
+            span.glyphicon.glyphicon-pencil
+          '&nbsp;
+          = link_to category, data: {:confirm => "Are you sure to delete category '#{category.name}'?"}, :method => :delete do
+            span.glyphicon.glyphicon-remove

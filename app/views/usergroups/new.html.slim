@@ -1,5 +1,3 @@
 h1 New usergroup
 
-== render 'form'
-
-= link_to 'Back', usergroups_path
+== render 'form', :links => [ { :title => 'Back', :path => usergroups_path } ]

@@ -1,21 +1,34 @@
-= form_for @notice do |f|
-  - if @notice.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@notice.errors.count, "error")} prohibited this notice from being saved:"
-      ul
-        - @notice.errors.full_messages.each do |message|
-          li = message
+- readonly ||= false
 
-  .field
-    = f.label :creator
-    = f.text_field :creator
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :category
-    = f.text_field :category
-  .field
-    = f.label :text
-    = f.text_area :text
-  .actions = f.submit
+= form_for @notice, html:  { class: "form-horizontal" } do |f|
+  - if @notice.errors.any?
+    div.alert.alert-danger.alert-dismissible
+      button.close type="button" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+      - @notice.errors.full_messages.each do |message|
+        = message
+        br
+
+  - if readonly == true
+    div.form-group
+      = f.label :creator, class: "col-sm-1 control-label"
+      div.col-sm-4
+        = f.text_field :creator, class: "form-control", readonly: readonly
+  div.form-group
+    = f.label :title, class: "col-sm-1 control-label"
+    div.col-sm-4
+      = f.text_field :title, class: "form-control", readonly: readonly
+  div.form-group
+    = f.label :category, class: "col-sm-1 control-label"
+    div.col-sm-4
+      = f.text_field :category, class: "form-control", readonly: readonly
+  div.form-group
+    = f.label :text, class: "col-sm-1 control-label"
+    div.col-sm-4
+      = f.text_area :text, class: "form-control", readonly: readonly
+  div.form-group
+    div.col-sm-offset-1.col-sm-4
+      - if readonly == false
+        = f.submit class: "btn btn-default"
+      - links.each do |link|
+        = link_to link[:title], link[:path], class: "btn btn-link"

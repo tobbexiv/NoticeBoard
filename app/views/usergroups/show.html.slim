@@ -1,12 +1,3 @@
-p#notice = notice
+h1 Show usergroup
 
-p
-  strong Admin:
-  = @usergroup.admin
-p
-  strong Name:
-  = @usergroup.name
-
-= link_to 'Edit', edit_usergroup_path(@usergroup)
-'|
-= link_to 'Back', usergroups_path
+== render 'form', :links => [ { :title => 'Edit', :path => edit_usergroup_path(@usergroup) }, { :title => 'Back', :path => usergroups_path } ], :readonly => true

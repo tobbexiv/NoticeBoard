@@ -1,23 +1,23 @@
-h1 Listing usergroups
+h1
+  'Usergroups
+  = link_to new_usergroup_path
+    span.glyphicon.glyphicon-plus
 
-table
+table.table.table-striped
   thead
     tr
-      th Admin
       th Name
-      th
-      th
-      th
+      th Action
 
   tbody
     - @usergroups.each do |usergroup|
       tr
-        td = usergroup.admin
         td = usergroup.name
-        td = link_to 'Show', usergroup
-        td = link_to 'Edit', edit_usergroup_path(usergroup)
-        td = link_to 'Destroy', usergroup, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
-= link_to 'New Usergroup', new_usergroup_path
+        = link_to usergroup do
+          span.glyphicon.glyphicon-search
+          '&nbsp;
+          = link_to edit_usergroup_path(usergroup)
+            span.glyphicon.glyphicon-pencil
+          '&nbsp;
+          = link_to usergroup, data: {:confirm => "Are you sure to delete usergroup '#{usergroup.name}'?"}, :method => :delete do
+            span.glyphicon.glyphicon-remove
