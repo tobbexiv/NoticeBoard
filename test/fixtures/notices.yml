@@ -1,13 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  creator_id: 1
+  creator: one
   title: Notice1
-  category_id: 1
+  category: one
   text: <%= Faker::Lorem.paragraph %>
+  usergroups: one
 
 two:
-  creator_id: 2
+  creator: two
   title: Notice 2
-  category_id: 2
+  category: two
   text: <%= Faker::Lorem.paragraph(10) %>
+  usergroups: two
+
+three:
+  creator: two
+  title: Notice 3
+  category: one
+  text: <%= Faker::Lorem.paragraph(5) %>

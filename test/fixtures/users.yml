@@ -5,9 +5,13 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  id: 1
   email: <%= Faker::Internet.safe_email %>
 
 two:
-  id: 2
+  email: <%= Faker::Internet.safe_email %>
+
+three:
+  email: <%= Faker::Internet.safe_email %>
+
+four:
   email: <%= Faker::Internet.safe_email %>
