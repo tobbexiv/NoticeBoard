@@ -1,26 +1,36 @@
 h1 Show notice
 
-== render 'form', :links => [ { :title => 'Edit', :path => edit_notice_path(@notice) }, { :title => 'Back', :path => notices_path } ], :readonly => true
+- if @notice.creator == current_user
+  - links = [ { :title => 'Edit', :path => edit_notice_path(@notice) }, { :title => 'Back', :path => notices_path } ]
+- else
+  - links = [ { :title => 'Back', :path => notices_path } ]
 
-h1 Grant access
+== render 'form', :links => links, :readonly => true
 
-= form_tag grant_notice_access_url, class: "form-horizontal" do
-  div.form-group
-    = label_tag :grant_access, 'Grant to', class: "col-sm-1 control-label"
-    div.col-sm-4
-      = select_tag "grant_access", options_from_collection_for_select(Usergroup.where(admin_id: current_user.id), 'id', 'name'), class: "form-control"
-  div.form-group
-    div.col-sm-offset-1.col-sm-4
-      = submit_tag "Grant access", class: "btn btn-default"
+- if @notice.creator == current_user
+  h1 Grant access
 
-h1 Access granted
+  = form_tag grant_notice_access_url, class: "form-horizontal" do
+    div.form-group
+      = label_tag :usergroup_id, 'Grant to', class: "col-sm-1 control-label"
+      div.col-sm-4
+        = select_tag "usergroup_id", options_from_collection_for_select(Usergroup.where(admin_id: current_user.id), 'id', 'name'), class: "form-control"
+    div.form-group
+      div.col-sm-offset-1.col-sm-4
+        = submit_tag "Grant access", class: "btn btn-default"
 
-table.table.table-striped
-  thead
-    tr
-      th Usergroup
+  h1 Access granted
 
-  tbody
-    - @notice.usergroups.each do |usergroup|
+  table.table.table-striped
+    thead
       tr
-        td = usergroup.name
+        th Usergroup
+        th Action
+
+    tbody
+      - @notice.usergroups.each do |usergroup|
+        tr
+          td = usergroup.name
+          td
+            = link_to revoke_notice_access_url(@notice, usergroup), data: {:confirm => "Are you sure to revoke the access for '#{usergroup.name}'?"}, :method => :delete do
+              span.glyphicon.glyphicon-remove

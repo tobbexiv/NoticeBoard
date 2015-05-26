@@ -9,8 +9,11 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'notices#index'
 
-  post 'notice/grantaccess/:id' => 'notices#grant_access', as: :grant_notice_access
-  #post 'usergroup/adduser/:id' => 'usergroups#add', as: :adduser_to_group
+  post 'notice/access/:id' => 'notices#grant_access', as: :grant_notice_access
+  delete 'notice/access/:id/:usergroup_id' => 'notices#revoke_access', as: :revoke_notice_access
+
+  post 'usergroup/user/:id' => 'usergroups#add_user', as: :add_user_to_group
+  delete 'usergroup/user/:id/:user_id' => 'usergroups#remove_user', as: :remove_user_from_group
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

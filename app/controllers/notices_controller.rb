@@ -1,5 +1,6 @@
 class NoticesController < ApplicationController
-  before_action :set_notice, only: [:show, :edit, :update, :destroy, :grant_access]
+  before_action :set_notice, only: [:show, :edit, :update, :destroy, :grant_access, :revoke_access]
+  before_action :set_usergroup, only: [:grant_access, :revoke_access]
 
   # GET /notices
   # GET /notices.json
@@ -103,22 +104,51 @@ class NoticesController < ApplicationController
 
   def grant_access
     if @notice.creator == current_user
-      usergroup = Usergroup.where(id: usergroup_params[:grant_access])
-      unless usergroup.nil?
+      unless @usergroup.nil?
         begin
-          @notice.usergroups.find(usergroup)
+          @notice.usergroups.find(@usergroup)
         rescue ActiveRecord::RecordNotFound
-          @notice.usergroups << usergroup
+          @notice.usergroups << @usergroup
+        end
+
+        respond_to do |format|
+          format.html { redirect_to @notice, notice: 'Access granted.' }
+          format.json { head :no_content }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to @notice, notice: 'Usergroup not existent.' }
+          format.json { head :no_content }
         end
       end
 
-      respond_to do |format|
-        format.html { redirect_to @notice, notice: 'Access granted.' }
-        format.json { head :no_content }
-      end
+
     else
       respond_to do |format|
         format.html { redirect_to @notice, alert: 'You have no right to grant access.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def revoke_access
+    if @notice.creator == current_user
+      unless @usergroup.nil?
+        @notice.usergroups.delete(@usergroup)
+
+        respond_to do |format|
+          format.html { redirect_to @notice, notice: 'Access revoked.' }
+          format.json { head :no_content }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to @notice, notice: 'Usergroup not existent.' }
+          format.json { head :no_content }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @notice, alert: 'You have no right to revoke access.' }
         format.json { head :no_content }
       end
     end
@@ -130,12 +160,12 @@ class NoticesController < ApplicationController
       @notice = Notice.find(params[:id])
     end
 
+    def set_usergroup
+      @usergroup = Usergroup.where(id: params[:usergroup_id], admin: current_user)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def notice_params
       params.require(:notice).permit(:title, :category_id, :text)
-    end
-
-    def usergroup_params
-      params.permit(:grant_access)
     end
 end

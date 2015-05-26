@@ -1,5 +1,6 @@
 class UsergroupsController < ApplicationController
-  before_action :set_usergroup, only: [:show, :edit, :update, :destroy]
+  before_action :set_usergroup, only: [:show, :edit, :update, :destroy, :add_user, :remove_user]
+  before_action :set_user, only: [:add_user, :remove_user]
 
   # GET /usergroups
   # GET /usergroups.json
@@ -62,10 +63,64 @@ class UsergroupsController < ApplicationController
     end
   end
 
+  def add_user
+    if @usergroup.admin == current_user
+      unless @user.nil? || @user == current_user
+        begin
+          @usergroup.users.find(@user)
+        rescue ActiveRecord::RecordNotFound
+          @usergroup.users << @user
+        end
+
+        respond_to do |format|
+          format.html { redirect_to @usergroup, notice: 'User added.' }
+          format.json { head :no_content }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to @usergroup, notice: 'Not possible to add user.' }
+          format.json { head :no_content }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @usergroup, alert: 'You have no right to add users.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def remove_user
+    if @usergroup.admin == current_user
+      unless @user.nil? || @user == current_user
+        @usergroup.users.delete(@user)
+
+        respond_to do |format|
+          format.html { redirect_to @usergroup, notice: 'User removed.' }
+          format.json { head :no_content }
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to @usergroup, notice: 'Not possible to remove user.' }
+          format.json { head :no_content }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @usergroup, alert: 'You have no right to remove users.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_usergroup
       @usergroup = Usergroup.find(params[:id])
+    end
+
+    def set_user
+      @user = User.where(id: params[:user_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

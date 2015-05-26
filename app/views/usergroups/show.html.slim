@@ -1,3 +1,30 @@
 h1 Show usergroup
 
 == render 'form', :links => [ { :title => 'Edit', :path => edit_usergroup_path(@usergroup) }, { :title => 'Back', :path => usergroups_path } ], :readonly => true
+
+h1 Add user
+
+= form_tag add_user_to_group_url, class: "form-horizontal" do
+  div.form-group
+    = label_tag :user_id, 'Add user', class: "col-sm-1 control-label"
+    div.col-sm-4
+      = select_tag "user_id", options_from_collection_for_select(User.where.not(id: current_user.id), 'id', 'email'), class: "form-control"
+  div.form-group
+    div.col-sm-offset-1.col-sm-4
+      = submit_tag "Add user", class: "btn btn-default"
+
+h1 Users in group
+
+table.table.table-striped
+  thead
+    tr
+      th User
+      th Action
+
+  tbody
+    - @usergroup.users.each do |user|
+      tr
+        td = user.email
+        td
+          = link_to remove_user_from_group_url(@usergroup, user), data: {:confirm => "Are you sure to remove '#{user.email}'?"}, :method => :delete do
+            span.glyphicon.glyphicon-remove
