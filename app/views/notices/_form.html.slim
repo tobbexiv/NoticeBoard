@@ -13,15 +13,18 @@
     div.form-group
       = f.label :creator, class: "col-sm-1 control-label"
       div.col-sm-4
-        = f.text_field :creator, class: "form-control", readonly: readonly
+        = f.text_field :creator, class: "form-control", value: @notice.creator.email, readonly: readonly
   div.form-group
     = f.label :title, class: "col-sm-1 control-label"
     div.col-sm-4
       = f.text_field :title, class: "form-control", readonly: readonly
   div.form-group
-    = f.label :category, class: "col-sm-1 control-label"
+    = f.label :category_id, class: "col-sm-1 control-label"
     div.col-sm-4
-      = f.text_field :category, class: "form-control", readonly: readonly
+      - if readonly == true
+        = f.text_field :category_id, class: "form-control", value: @notice.category.name, readonly: readonly
+      - else
+        = f.select :category_id, Category.all.pluck(:name, :id), class: "form-control", readonly: readonly
   div.form-group
     = f.label :text, class: "col-sm-1 control-label"
     div.col-sm-4

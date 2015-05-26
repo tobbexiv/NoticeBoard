@@ -25,6 +25,7 @@ class UsergroupsController < ApplicationController
   # POST /usergroups.json
   def create
     @usergroup = Usergroup.new(usergroup_params)
+    @usergroup.admin = current_user
 
     respond_to do |format|
       if @usergroup.save
@@ -69,6 +70,6 @@ class UsergroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def usergroup_params
-      params.require(:usergroup).permit(:admin_id, :name)
+      params.require(:usergroup).permit(:name)
     end
 end

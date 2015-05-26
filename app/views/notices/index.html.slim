@@ -15,7 +15,7 @@ table.table.table-striped
     - @notices.own(current_user).each do |notice|
       tr
         td = notice.title
-        td = notice.category
+        td = notice.category.name
         td
           = link_to notice do
             span.glyphicon.glyphicon-search
@@ -31,15 +31,15 @@ table.table.table-striped
     tr
       th Title
       th Category
-      th Author
-      th
+      th Creator
+      th Action
 
   tbody
     - @notices.accessgranted(current_user).each do |notice|
       tr
         td = notice.title
-        td = notice.category
-        td = notice.author.email
+        td = notice.category.name
+        td = notice.creator.email
         td
           = link_to notice do
             span.glyphicon.glyphicon-search
